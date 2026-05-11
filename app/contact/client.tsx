@@ -2,15 +2,18 @@
 
 import type React from "react"
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
-import { ParticleBackground } from "@/components/particle-background"
 import { Footer } from "@/components/footer"
+import { Terminal, Mail, Phone, Globe, ShieldCheck, ArrowRight, Zap } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
+import { t } from "@/lib/translations"
 
 export function ContactPageClient() {
+  const { language } = useLanguage()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,19 +42,19 @@ export function ContactPageClient() {
       if (response.ok) {
         setSubmitMessage({
           type: "success",
-          text: "Message sent successfully! I'll get back to you soon.",
+          text: "TRANSMISSION_SUCCESSFUL: MISSION_ACKNOWLEDGED",
         })
         setFormData({ name: "", email: "", subject: "", message: "" })
       } else {
         setSubmitMessage({
           type: "error",
-          text: data.error || "Failed to send message. Please try again.",
+          text: data.error || "TRANSMISSION_FAILURE: RETRY_PROTOCOL_REQUIRED",
         })
       }
     } catch (error) {
       setSubmitMessage({
         type: "error",
-        text: "An error occurred. Please try again later.",
+        text: "SYSTEM_ERROR: CONNECTION_UPLINK_FAILED",
       })
     } finally {
       setIsLoading(false)
@@ -64,156 +67,148 @@ export function ContactPageClient() {
   }
 
   return (
-    <main className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
-      <ParticleBackground />
+    <main className="relative min-h-screen bg-background text-foreground selection:bg-primary/30">
       <Navigation />
 
-      <div className="pt-32 pb-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-primary text-balance">Get In Touch</h1>
-            <div className="w-20 h-1 bg-primary mx-auto mb-8"></div>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Have a project in mind? Need a web developer or designer? Let's talk about how I can help bring your ideas
-              to life.
+      <div className="pt-32 pb-20 px-4 relative overflow-hidden tech-grid">
+        <div className="container mx-auto max-w-7xl relative z-10">
+          {/* Header */}
+          <div className="text-center mb-24">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center justify-center gap-2 text-primary font-mono text-sm uppercase tracking-widest mb-6"
+            >
+              <Terminal size={16} />
+              <span>Communication_Portal // v3.0</span>
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-8xl font-bold mb-6 text-white tracking-tighter uppercase">
+              Initialize_Contact
+            </h1>
+            
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-mono leading-relaxed mb-12">
+              Ready to engineer your next high-performance digital system? Establish a secure uplink below to discuss your technical requirements.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <Card className="bg-card/50 border-primary/20 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-primary">WhatsApp</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href="https://wa.me/2349016615446"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline block"
-                >
-                  +234 901 661 5446
-                </a>
-                <p className="text-sm text-muted-foreground mt-2">Quick response on WhatsApp</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-primary/20 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-primary">Email</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href="mailto:emmadridwebdeveloper@gmail.com"
-                  className="text-primary hover:underline block"
-                >
-                  emmadridwebdeveloper@gmail.com
-                </a>
-                <p className="text-sm text-muted-foreground mt-2">Professional inquiries</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-primary/20 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-primary">Twitter/X</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href="https://x.com/emmadrid_?s=21"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline block"
-                >
-                  @emmadrid_
-                </a>
-                <p className="text-sm text-muted-foreground mt-2">Follow for updates</p>
-              </CardContent>
-            </Card>
+          <div className="grid lg:grid-cols-3 gap-8 mb-20">
+            {[
+              { icon: <Zap size={20} />, label: "WhatsApp_Uplink", value: "+234 901 661 5446", link: "https://wa.me/2349016615446" },
+              { icon: <Mail size={20} />, label: "Email_Protocol", value: "emmadridwebdeveloper@gmail.com", link: "mailto:emmadridwebdeveloper@gmail.com" },
+              { icon: <Globe size={20} />, label: "Global_Network", value: "@Xclusive002", link: "https://github.com/Xclusive002" },
+            ].map((method, i) => (
+              <motion.a
+                key={i}
+                href={method.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="p-8 border border-white/5 bg-card/10 hover:border-primary/30 transition-all duration-500 group"
+              >
+                <div className="text-primary mb-6 group-hover:scale-110 transition-transform">{method.icon}</div>
+                <p className="text-[10px] font-mono text-primary/40 uppercase tracking-[0.2em] mb-2">{method.label}</p>
+                <p className="text-lg font-mono text-white tracking-tighter break-all">{method.value}</p>
+              </motion.a>
+            ))}
           </div>
 
-          <Card className="bg-card/50 border-primary/20 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl text-primary">Send me a Message</CardTitle>
-              <p className="text-muted-foreground text-sm mt-2">
-                Fill out the form below and I'll get back to you as soon as possible.
-              </p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Name</label>
+          <div className="max-w-4xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="border border-white/5 bg-card/10 p-10 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-white/5 uppercase">Secure_Form_V1.0</div>
+              
+              <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">User_Identity</label>
                     <Input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Your name"
+                      placeholder="FULL_NAME"
                       required
-                      className="bg-background/50 border-primary/20 focus:border-primary/50"
+                      className="bg-background/50 border-white/10 rounded-none font-mono text-sm focus:border-primary/50 transition-all"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Return_Address</label>
                     <Input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="your@email.com"
+                      placeholder="EMAIL@DOMAIN.COM"
                       required
-                      className="bg-background/50 border-primary/20 focus:border-primary/50"
+                      className="bg-background/50 border-white/10 rounded-none font-mono text-sm focus:border-primary/50 transition-all"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">Subject</label>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Protocol_Subject</label>
                   <Input
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Project or inquiry subject"
+                    placeholder="SYSTEM_INQUIRY_TYPE"
                     required
-                    className="bg-background/50 border-primary/20 focus:border-primary/50"
+                    className="bg-background/50 border-white/10 rounded-none font-mono text-sm focus:border-primary/50 transition-all"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">Message</label>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Message_Payload</label>
                   <Textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell me about your project or inquiry..."
+                    placeholder="ENTER_TRANSMISSION_DETAILS..."
                     required
                     rows={6}
-                    className="bg-background/50 border-primary/20 focus:border-primary/50"
+                    className="bg-background/50 border-white/10 rounded-none font-mono text-sm focus:border-primary/50 transition-all resize-none"
                   />
                 </div>
 
                 {submitMessage && (
-                  <div
-                    className={`p-4 rounded-lg ${
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className={`p-4 font-mono text-xs ${
                       submitMessage.type === "success"
-                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                        : "bg-red-500/20 text-red-400 border border-red-500/30"
+                        ? "bg-primary/10 text-primary border border-primary/20"
+                        : "bg-red-500/10 text-red-400 border border-red-500/20"
                     }`}
                   >
                     {submitMessage.text}
-                  </div>
+                  </motion.div>
                 )}
 
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-primary hover:bg-primary/80 text-primary-foreground text-base py-6"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none font-mono text-sm py-8 uppercase tracking-[0.2em] transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  {isLoading ? "Sending..." : "Send Message"}
+                  {isLoading ? "EXECUTING_TRANSMISSION..." : "EXECUTE_UPLINK()"}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
+            </motion.div>
+
+            <div className="mt-20 text-center">
+              <div className="inline-flex items-center gap-3 px-8 py-4 border border-white/5 bg-card/5 font-mono text-[10px] text-white/40 uppercase tracking-[0.3em]">
+                <ShieldCheck size={14} className="text-primary/40" />
+                End-to-End Encryption Enabled // Secure Communication Layer
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

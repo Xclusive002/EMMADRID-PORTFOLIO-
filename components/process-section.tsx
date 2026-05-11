@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Search, PenTool, Code2, ShieldCheck, Rocket, RefreshCw } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
+import { t } from "@/lib/translations"
 
 const steps = [
   {
@@ -49,6 +51,8 @@ const steps = [
 ]
 
 export function ProcessSection() {
+  const { language } = useLanguage()
+
   return (
     <section id="process" className="py-32 px-4 relative bg-background overflow-hidden">
       {/* Decorative vertical line */}
@@ -66,8 +70,8 @@ export function ProcessSection() {
             <RefreshCw size={16} className="animate-spin-slow" />
             <span>Workflow // SDLC_Protocol</span>
           </motion.div>
-          <h2 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-6">
-            ENGINEERING <span className="text-primary/60">PROCESS</span>
+          <h2 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-6 uppercase">
+            Engineering <span className="text-primary/60">Process</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-mono">
             A standardized, precision-driven methodology for delivering enterprise-grade software solutions.
@@ -85,13 +89,13 @@ export function ProcessSection() {
               className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-24 ${idx % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
             >
               {/* Content */}
-              <div className="flex-1 text-center lg:text-left space-y-4">
+              <div className={`flex-1 text-center space-y-4 ${idx % 2 === 1 ? "lg:text-right" : "lg:text-left"}`}>
                 <div className={`flex items-center gap-4 justify-center ${idx % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"}`}>
                   <span className="text-5xl font-mono font-bold text-primary/20">{step.id}</span>
                   <div className="h-px flex-1 bg-white/5 hidden lg:block" />
                 </div>
                 <h3 className="text-2xl font-bold text-white font-mono tracking-tighter uppercase">{step.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed max-w-md mx-auto lg:mx-0">
+                <p className={`text-muted-foreground text-sm leading-relaxed max-w-md mx-auto ${idx % 2 === 1 ? "lg:ml-auto lg:mr-0" : "lg:ml-0 lg:mr-auto"}`}>
                   {step.description}
                 </p>
                 <div className={`flex flex-wrap gap-2 justify-center ${idx % 2 === 1 ? "lg:justify-end" : "lg:justify-start"}`}>
