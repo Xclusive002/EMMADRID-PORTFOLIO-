@@ -6,6 +6,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { ShieldCheck, Globe, Terminal, Box, Layers, Cpu, Database, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useLanguage } from "@/lib/language-context"
 import { t } from "@/lib/translations"
 
